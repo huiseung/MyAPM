@@ -1,6 +1,6 @@
 package com.example.agent.advice;
 
-import com.example.agent.Sender;
+import com.example.agent.sender.Sender;
 import com.example.agent.message.Metric;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +28,8 @@ public class DispatcherServletAdvice {
                 Object uri = request.getClass().getMethod("getRequestURI").invoke(request);
                 path = uri != null ? uri.toString() : null;
             } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
+                path = "unknown";
             }
         }
 
@@ -38,6 +39,6 @@ public class DispatcherServletAdvice {
         }
 
         Metric metric = new Metric(path, duration, stackTrace);
-        Sender.sendMetric(metric);
+        Sender.getInstance().sendMetric(metric);
     }
 }
