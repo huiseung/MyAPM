@@ -1,5 +1,6 @@
 package org.example.collector.network;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
@@ -9,6 +10,7 @@ import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.Iterator;
+import java.util.List;
 import org.example.collector.storage.CollectorStorage;
 import org.example.collector.message.Metric;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ public class CollectorNetwork implements Runnable {
             channel.register(selector, SelectionKey.OP_READ);
             System.out.println("Listening on port 9999...");
 
-            ByteBuffer buffer = ByteBuffer.allocate(8192);
+            ByteBuffer buffer = ByteBuffer.allocate(65507);
 
             while (running) {
                 try {
@@ -63,8 +65,8 @@ public class CollectorNetwork implements Runnable {
 
                                 try {
                                     String json = new String(jsonBytes, "UTF-8");
-                                    Metric metric = objectMapper.readValue(json, Metric.class);
-                                    collectorStorage.saveMetric(sender, metric);
+                                    List<Metric> metrics = objectMapper.readValue(json, new TypeReference<List<Metric>>() {});
+                                    collectorStorage.saveMetric(sender, metrics);
                                 } catch (Exception e) {
                                     System.err.println("Failed to process JSON: " + e.getMessage());
                                     e.printStackTrace();
