@@ -2,12 +2,12 @@ package org.example.agent;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.instrument.Instrumentation;
-import java.util.Map;
 import org.example.agent.config.AgentConfig;
+import org.example.agent.plugin.DispatcherServletMonitoring;
 import org.example.agent.plugin.PluginRegistry;
+import org.example.agent.sender.factory.MetricSenderFactory;
 import org.example.agent.util.Log;
 import org.yaml.snakeyaml.Yaml;
 
@@ -40,19 +40,11 @@ public class MonitoringAgent {
         }
     }
 
-    private static String getConfigValue(Map<String, Object> config, String section, String key) {
-        Map<String, Object> sectionMap = (Map<String, Object>) config.get(section);
-        if (sectionMap == null || !sectionMap.containsKey(key)) {
-            Log.log("Error: Missing configuration value for [" + section + "." + key + "]");
-            return null;
-        }
-        return sectionMap.get(key).toString();
-    }
-
     private static void setPlugin(AgentConfig agentConfig, Instrumentation inst) {
         PluginRegistry pluginRegistry = new PluginRegistry();
+        MetricSenderFactory.init(agentConfig);
         // register
-
+        pluginRegistry.register(new DispatcherServletMonitoring());
         // setup
         pluginRegistry.setupAll(inst);
     }
