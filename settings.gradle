@@ -1,0 +1,5 @@
+rootProject.name = 'MyAPM'
+include 'agent'
+include 'collector'
+include 'common'
+
