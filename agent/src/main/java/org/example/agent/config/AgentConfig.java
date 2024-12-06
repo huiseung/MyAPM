@@ -1,34 +1,82 @@
 package org.example.agent.config;
 
+
 public class AgentConfig {
-    private final String appId;
-    private final String collectorServerAddress;
-    private final int collectorServerPort;
+    private Agent agent;
+    private Collector collector;
 
-    public AgentConfig(String appId, String collectorServerAddress, int collectorServerPort) {
-        this.appId = appId;
-        this.collectorServerAddress = collectorServerAddress;
-        this.collectorServerPort = collectorServerPort;
+    // Getters and Setters
+    public Agent getAgent() {
+        return agent;
     }
 
-    public String getAppId() {
-        return appId;
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
-    public String getCollectorServerIp() {
-        return collectorServerAddress;
+    public Collector getCollector() {
+        return collector;
     }
 
-    public int getCollectorServerPort() {
-        return collectorServerPort;
+    public void setCollector(Collector collector) {
+        this.collector = collector;
     }
 
     @Override
     public String toString() {
         return "AgentConfig{" +
-                "appId='" + appId + '\'' +
-                ", collectorServerAddress='" + collectorServerAddress + '\'' +
-                ", collectorServerPort=" + collectorServerPort +
+                "agent=" + agent +
+                ", collector=" + collector +
                 '}';
+    }
+
+    // inner class Agent
+    protected static class Agent {
+        private String appId;
+
+        public String getAppId() {
+            return appId;
+        }
+
+        public void setAppId(String appId) {
+            this.appId = appId;
+        }
+
+        @Override
+        public String toString() {
+            return "Agent{" +
+                    "appId='" + appId + '\'' +
+                    '}';
+        }
+    }
+
+    // inner class Collector
+    protected static class Collector {
+        private String address;
+        private int port;
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
+        }
+
+        @Override
+        public String toString() {
+            return "Collector{" +
+                    "address='" + address + '\'' +
+                    ", port=" + port +
+                    '}';
+        }
     }
 }
