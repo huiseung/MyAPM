@@ -17,6 +17,7 @@ dependencies {
 
     implementation 'net.bytebuddy:byte-buddy:1.14.8'
     implementation 'net.bytebuddy:byte-buddy-agent:1.14.8'
+    implementation 'org.yaml:snakeyaml:2.0'
 }
 
 test {
