@@ -7,6 +7,7 @@ import java.lang.instrument.Instrumentation;
 import org.example.agent.config.AgentConfig;
 import org.example.agent.plugin.DispatcherServletMonitoring;
 import org.example.agent.plugin.PluginRegistry;
+import org.example.agent.plugin.SpringMvcMonitoring;
 import org.example.agent.sender.factory.MetricSenderFactory;
 import org.example.agent.util.Log;
 import org.yaml.snakeyaml.Yaml;
@@ -44,7 +45,8 @@ public class MonitoringAgent {
         PluginRegistry pluginRegistry = new PluginRegistry();
         MetricSenderFactory.init(agentConfig);
         // register
-        pluginRegistry.register(new DispatcherServletMonitoring());
+        // pluginRegistry.register(new DispatcherServletMonitoring());
+        pluginRegistry.register(new SpringMvcMonitoring());
         // setup
         pluginRegistry.setupAll(inst);
     }
