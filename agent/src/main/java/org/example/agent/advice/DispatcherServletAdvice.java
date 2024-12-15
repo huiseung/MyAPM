@@ -1,15 +1,12 @@
 package org.example.agent.advice;
 
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.concurrent.TimeUnit;
 import net.bytebuddy.asm.Advice;
 import org.example.agent.sender.Sender;
-import org.example.agent.sender.factory.MetricSenderFactory;
+import org.example.agent.sender.factory.SpanSenderFactory;
 import org.example.common.context.Span;
 import org.example.common.context.TraceContext;
-import org.example.common.message.Metric;
 
 public class DispatcherServletAdvice {
     @Advice.OnMethodEnter
@@ -27,6 +24,7 @@ public class DispatcherServletAdvice {
     ) {
         long endTime = System.currentTimeMillis();
         Span span = TraceContext.endSpan(endTime);
-        System.out.println(span);
+        Sender<Span> sender = SpanSenderFactory.getSender();
+        sender.send(span);
     }
 }
