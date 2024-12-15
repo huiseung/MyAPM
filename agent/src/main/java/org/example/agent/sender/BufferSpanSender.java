@@ -6,21 +6,21 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.example.agent.sender.buffer.Buffer;
 import org.example.agent.sender.transport.Transport;
-import org.example.common.message.Metric;
+import org.example.common.context.Span;
 
-public class BufferMetricSender implements Sender<Metric> {
-    private final Buffer<Metric> buffer;
+public class BufferSpanSender implements Sender<Span>{
+    private final Buffer<Span> buffer;
     private final int bufferSize;
     private final float sampleRate;
 
-    private final Transport<Metric> transport;
+    private final Transport<Span> transport;
 
     private final ScheduledExecutorService scheduler;
     private final int scheduleInterval;
 
     private final Random random;
 
-    public BufferMetricSender(Buffer<Metric> buffer, int bufferSize, float sampleRate, int scheduleInterval, Transport<Metric> transport) {
+    public BufferSpanSender(Buffer<Span> buffer, int bufferSize, float sampleRate, int scheduleInterval, Transport<Span> transport) {
         this.buffer = buffer;
         this.bufferSize = bufferSize;
         this.sampleRate = sampleRate;
@@ -34,13 +34,13 @@ public class BufferMetricSender implements Sender<Metric> {
         this.random = new Random();
     }
 
-    public BufferMetricSender(Buffer<Metric> buffer, Transport<Metric> transport) {
+    public BufferSpanSender(Buffer<Span> buffer, Transport<Span> transport) {
         this(buffer, 10, 0.5f, 1, transport);
     }
 
 
     @Override
-    public void send(Metric metric) {
+    public void send(Span metric) {
         if(isSample()){
             int size = buffer.addAndGetSize(metric);
             if(size >= bufferSize) {
