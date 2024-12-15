@@ -31,8 +31,9 @@ public class AgentConfig {
     }
 
     // inner class Agent
-    protected static class Agent {
+    public static class Agent {
         private String appId;
+        private Metric metric;
 
         public String getAppId() {
             return appId;
@@ -42,16 +43,44 @@ public class AgentConfig {
             this.appId = appId;
         }
 
+        public Metric getMetric() {
+            return metric;
+        }
+
+        public void setMetric(Metric metric) {
+            this.metric = metric;
+        }
+
         @Override
         public String toString() {
             return "Agent{" +
                     "appId='" + appId + '\'' +
+                    ", metric=" + metric +
+                    '}';
+        }
+    }
+
+    public static class Metric{
+        private int measureInterval;
+
+        public int getMeasureInterval() {
+            return measureInterval;
+        }
+
+        public void setMeasureInterval(int measureInterval) {
+            this.measureInterval = measureInterval;
+        }
+
+        @Override
+        public String toString() {
+            return "Metric{" +
+                    "measureInterval=" + measureInterval +
                     '}';
         }
     }
 
     // inner class Collector
-    protected static class Collector {
+    public static class Collector {
         private String address;
         private int port;
 
