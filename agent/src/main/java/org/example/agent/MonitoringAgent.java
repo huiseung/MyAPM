@@ -58,7 +58,11 @@ public class MonitoringAgent {
         // register
         pluginRegistry.register(new DispatcherServletMonitoring());
         pluginRegistry.register(new SpringMvcMonitoring());
-        pluginRegistry.register(new MySQLMonitoring());
+        for(String plugin : agentConfig.getAgent().getPlugin()){
+            if(plugin.equals("mysql")){
+                pluginRegistry.register(new MySQLMonitoring());
+            }
+        }
         // setup
         pluginRegistry.setupAll(inst);
     }

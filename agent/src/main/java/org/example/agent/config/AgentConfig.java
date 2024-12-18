@@ -1,6 +1,8 @@
 package org.example.agent.config;
 
 
+import java.util.List;
+
 public class AgentConfig {
     private Agent agent;
     private Collector collector;
@@ -33,6 +35,7 @@ public class AgentConfig {
     // inner class Agent
     public static class Agent {
         private String appId;
+        private List<String> plugin;
         private Metric metric;
 
         public String getAppId() {
@@ -41,6 +44,14 @@ public class AgentConfig {
 
         public void setAppId(String appId) {
             this.appId = appId;
+        }
+
+        public List<String> getPlugin() {
+            return plugin;
+        }
+
+        public void setPlugin(List<String> plugin) {
+            this.plugin = plugin;
         }
 
         public Metric getMetric() {
