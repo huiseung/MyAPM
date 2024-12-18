@@ -1,5 +1,6 @@
 package org.example.agent.sender;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -13,14 +14,14 @@ public class BufferSpanSender implements Sender<Span>{
     private final int bufferSize;
     private final float sampleRate;
 
-    private final Transport<Span> transport;
+    private final Transport<List<Span>> transport;
 
     private final ScheduledExecutorService scheduler;
     private final int scheduleInterval;
 
     private final Random random;
 
-    public BufferSpanSender(Buffer<Span> buffer, int bufferSize, float sampleRate, int scheduleInterval, Transport<Span> transport) {
+    public BufferSpanSender(Buffer<Span> buffer, int bufferSize, float sampleRate, int scheduleInterval, Transport<List<Span>> transport) {
         this.buffer = buffer;
         this.bufferSize = bufferSize;
         this.sampleRate = sampleRate;
@@ -34,8 +35,8 @@ public class BufferSpanSender implements Sender<Span>{
         this.random = new Random();
     }
 
-    public BufferSpanSender(Buffer<Span> buffer, Transport<Span> transport) {
-        this(buffer, 10, 0.5f, 1, transport);
+    public BufferSpanSender(Buffer<Span> buffer, Transport<List<Span>> transport) {
+        this(buffer, 10, 1, 1, transport);
     }
 
 
@@ -50,10 +51,10 @@ public class BufferSpanSender implements Sender<Span>{
     }
 
     private boolean isSample(){
-        return random.nextFloat() < sampleRate;
+        return random.nextFloat() <= sampleRate;
     }
 
     private void flush() {
-        transport.sendBuffer(buffer.flush());
+        transport.send(buffer.flush());
     }
 }
